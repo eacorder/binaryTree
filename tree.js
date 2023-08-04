@@ -95,8 +95,8 @@ export default class Tree {
         }
     }
 
-    levelOrder(callback){
-        let root = this.root
+    levelOrder(callback, root = this.root){
+         
         let queue = [];
         let result = [];
         let nextNode;
@@ -125,8 +125,104 @@ export default class Tree {
                 
         if (!callback) return result;
 
+    }
+
+    inOrder(callback, root = this.root, arrayInOrder = []){
+        
+        if (!root) {
+            return ;
+        }
+
+        this.inOrder(callback, root.leftNode, arrayInOrder);
+
+        if (callback) callback(root);
+        arrayInOrder.push(root.value);
+
+        this.inOrder(callback, root.rightNode, arrayInOrder)
+
+        if (arrayInOrder.length > 0) {
+            if (!callback) return arrayInOrder;
+        } ;     
 
     }
 
+    preOrder(callback, root = this.root, arrayPreOrder = []){
+        
+        if (!root) {
+            return ;
+        }
+
+        if (callback) callback(root);
+        arrayPreOrder.push(root.value);
+
+        this.preOrder(callback, root.leftNode, arrayPreOrder);        
+
+        this.preOrder(callback, root.rightNode, arrayPreOrder)
+
+        if (arrayPreOrder.length > 0) {
+            if (!callback) return arrayPreOrder;
+        } ;     
+
+    }
+
+    postOrder(callback, root = this.root, arrayPostOrder = []){
+        
+        if (!root) {
+            return ;
+        }
+
+        this.postOrder(callback, root.leftNode, arrayPostOrder);        
+
+        this.postOrder(callback, root.rightNode, arrayPostOrder);
+
+        if (callback) callback(root);
+        arrayPostOrder.push(root.value);
+
+        if (arrayPostOrder.length > 0) {
+            if (!callback) return arrayPostOrder;
+        } ;     
+
+    }
+
+    height(node){
+        if (node == null)
+            return -1;
+        
+        let lheight = this.height(node.leftNode);
+        let rheight = this.height(node.rightNode);
+
+        return Math.max(lheight, rheight) + 1;
+       
+    }
+
+    depth(node, count = 0){
+        if (node == null)
+            return ;
+        if ( node.value == this.root.value) return count;
+
+        
+        if ( node.value < this.root.value )
+           return this.depth(node.leftNode, count+1);
+        else
+           return this.depth(node.rightNode, count+1);
+    
+    }
+
+    isBalanced(node = this.root) {
+        if (node === null) return true;
+            let lh = this.height(node.leftNode);
+            let rh = this.height(node.rightNode);
+       
+        if (Math.abs(lh - rh) <= 1 && this.isBalanced(node.leftNode) == true && this.isBalanced(node.rightNode) == true)
+            return true
+
+        return false;
+    }
+
+    rebalance() {
+        if (this.root === null) return;
+        const sorted = [...new Set(this.inOrder().sort((a, b) => a - b))];
+        this.root = this.buildTree(sorted);
+    }
 }
 

@@ -6,7 +6,7 @@ const randomArr = (n) => {
     return arr;
 }
 
-const arr = randomArr(8)
+const arr = randomArr(100)
 const tree = new Tree(arr);  
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -22,12 +22,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
-tree.insert(60)
-tree.insert(25)
-tree.insert(19)
-tree.delete(19)
 
-tree.levelOrder();
+
+
 //console.log(tree.find(25));
-
+//console.log(tree.inOrder());
+//console.log(tree.preOrder());
+//console.log(tree.postOrder());
+//console.log(tree.height(tree.root))
+console.log(tree.isBalanced())
 prettyPrint(tree.root); 
